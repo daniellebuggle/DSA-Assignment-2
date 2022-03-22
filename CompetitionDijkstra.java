@@ -16,13 +16,29 @@
  */
 
 public class CompetitionDijkstra {
+/*
+    private final int sA;
+    private final int sB;
+    private final int sC;
+
+ */
+
 
     /**
      * @param filename: A filename containing the details of the city road network
      * @param sA, sB, sC: speeds for 3 contestants
     */
     CompetitionDijkstra (String filename, int sA, int sB, int sC){
+        /*
+        this.sA = sA; // walking speed of contestant A
+        this.sB = sB; // walking speed of contestant B
+        this.sC = sC; // walking speed of contestant C
 
+
+
+        double [][] graph = new double[][];
+        */
+         
        //TODO
     }
 
