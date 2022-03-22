@@ -4,7 +4,7 @@ public class Edge {
     double weight;
 
 
-    public Edge(int verticeOne, int verticeTwo, int weight) {
+    public Edge(int verticeOne, int verticeTwo, double weight) {
         this.verticeOne = verticeOne;
         this.verticeTwo = verticeTwo;
         this.weight = weight;

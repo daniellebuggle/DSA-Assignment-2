@@ -15,13 +15,19 @@
  * This class implements the competition using Dijkstra's algorithm
  */
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.Scanner;
+
 public class CompetitionDijkstra {
-/*
+
     private final int sA;
     private final int sB;
     private final int sC;
 
- */
+    LinkedList<Edge> listOfEdges = new LinkedList<>();
+    Graph graph;
 
 
     /**
@@ -29,17 +35,39 @@ public class CompetitionDijkstra {
      * @param sA, sB, sC: speeds for 3 contestants
     */
     CompetitionDijkstra (String filename, int sA, int sB, int sC){
-        /*
         this.sA = sA; // walking speed of contestant A
         this.sB = sB; // walking speed of contestant B
         this.sC = sC; // walking speed of contestant C
 
-
-
-        double [][] graph = new double[][];
-        */
-         
-       //TODO
+        try {
+            File myObj = new File(filename);
+            Scanner myReader = new Scanner(myObj);
+            int count = 0;
+            int numberOfVertices = 0;
+            int numberOfEdges = 0;
+            while (myReader.hasNextLine()) {
+                if(count == 0){
+                    numberOfVertices = myReader.nextInt();
+                    count++;
+                }else if(count == 1){
+                    numberOfEdges = myReader.nextInt();
+                    count++;
+                }else{
+                    for(int i = 0; i < numberOfEdges; i++){
+                        int v1 = myReader.nextInt();
+                        int v2 = myReader.nextInt();
+                        double weight = myReader.nextDouble();
+                        Edge newEdge = new Edge(v1, v2, weight);
+                        listOfEdges.add(newEdge);
+                    }
+                }
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        graph = new Graph(listOfEdges);
     }
 
 
