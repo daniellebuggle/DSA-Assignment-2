@@ -44,7 +44,7 @@ public class CompetitionFloydWarshall {
             while (myReader.hasNextLine()) {
                 if(count == 0){
                     numberOfVertices = myReader.nextInt();
-                    graph = new double[numberOfVertices - 1][numberOfVertices - 1];
+                    graph = new double[numberOfVertices][numberOfVertices];
                     count++;
                 }else if(count == 1){
                     numberOfEdges = myReader.nextInt();
