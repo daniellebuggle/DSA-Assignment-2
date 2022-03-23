@@ -17,6 +17,7 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -24,12 +25,11 @@ import java.util.Scanner;
 public class CompetitionDijkstra {
 
     private static double[][] graph;
-    private final int sA;
-    private final int sB;
-    private final int sC;
+    private static int sA = 0;
+    private static int sB = 0;
+    private static int sC = 0;
     private static int numberOfVertices;
     private static int numberOfEdges;
-    private static LinkedList<Double> shortestDistances = new LinkedList<>();
 
 
     LinkedList<Edge> listOfEdges = new LinkedList<>();
@@ -78,10 +78,89 @@ public class CompetitionDijkstra {
     /**
     * @return int: minimum minutes that will pass before the three contestants can meet
      */
-    public int timeRequiredforCompetition(){
+    public static int timeRequiredforCompetition(){
+        double distance1 = 0;
+        double distance2 = 0;
+        double distance3 = 0;
+
+        double max = 0;
+        double temp = 0;
+
+        double[] testArray = new double[3];
+        double[] tempArray = new double[3];
+
+        for(int j = 0; j < numberOfVertices; j++)
+        {
+            for(int i = 0; i < numberOfVertices; i++)
+            {
+                if(graph[i][j] > distance1)
+                {
+                    distance3 = distance2;
+                    distance2 = distance1;
+                    distance1 = graph[i][j];
+                }
+                else if(graph[i][j] > distance2)
+                {
+                    distance3 = distance2;
+                    distance2 = graph[i][j];
+                }
+                else if(graph[i][j] > distance3)
+                {
+                    distance3 = graph[i][j];
+                }
+            }
+            temp = distance1 + distance2 + distance3;
+            tempArray[0] = distance1;
+            tempArray[1] = distance2;
+            tempArray[2] = distance3;
+
+            if(temp > max)
+            {
+                max = temp;
+                testArray = tempArray;
+            }
+        }
+        distance1 = testArray[0] * 1000;
+        distance2 = testArray[1] * 1000;
+        distance3 = testArray[2] * 1000;
+
+        // Insert y
+        int x = sA;
+        int y = sB;
+        int z = sC;
         
-        //TO DO
-        return -1;
+        int temps;
+        if (y < x)
+        {
+            temps = x;
+            x = y;
+            y = temps;
+        }
+
+        // Insert z
+        if (z < y)
+        {
+            temps = y;
+            y = z;
+            z = temps;
+
+            if (y < x)
+            {
+                temps = x;
+                x = y;
+                y = temps;
+            }
+        }
+
+        System.out.println(x);
+        System.out.println(y);
+        System.out.println(z);
+
+        double longestDistSpeed = z*distance1;
+        double middleDistSpeed = y*distance2;
+        double shortestDistSpeed = z*distance3;
+
+        return (int) Math.ceil(longestDistSpeed + middleDistSpeed + shortestDistSpeed);
     }
 
     //get the vertex with minimum distance which is not included in SPT
@@ -111,7 +190,7 @@ public class CompetitionDijkstra {
         distance[sourceVertex] = 0;
 
         //create SPT
-        for (int i = 0; i <numberOfVertices ; i++) {
+        for (int i = 0; i < numberOfVertices ; i++) {
 
             //get the vertex with the minimum distance
             int vertex_U = getMinimumVertex(spt, distance);
@@ -134,8 +213,6 @@ public class CompetitionDijkstra {
                         double newKey = graph[vertex_U][vertex_V] + distance[vertex_U];
                         if(newKey<distance[vertex_V])
                             distance[vertex_V] = newKey;
-
-                        shortestDistances.add(newKey);
                     }
                 }
             }
@@ -148,6 +225,7 @@ public class CompetitionDijkstra {
     public static void printDijkstra(int sourceVertex, double[] key){
         System.out.println("Dijkstra Algorithm: (Adjacency Matrix)");
         for (int i = 0; i <numberOfVertices ; i++) {
+            graph[sourceVertex][i] = key[i];
             System.out.println("Source Vertex: " + sourceVertex + " to vertex " + i +
                     " distance: " + key[i]);
         }
@@ -155,15 +233,13 @@ public class CompetitionDijkstra {
 
 
     public static void main(String[] args) {
-        CompetitionDijkstra test = new CompetitionDijkstra("tinyEWD.txt", 1,2,3);
-        for(int i = 0; i < numberOfVertices - 1; i++){
+        CompetitionDijkstra test = new CompetitionDijkstra("tinyEWD.txt", 34,12,1);
+        for(int i = 0; i < numberOfVertices; i++){
             dijkstra_GetMinDistances(i);
             System.out.println();
         }
-        for (Double shortestDistance : shortestDistances) {
-            System.out.println(shortestDistance);
-        }
-
+        System.out.println(Arrays.deepToString(graph).replace("], ", "]\n").replace("[[", "[").replace("]]", "]"));
+        timeRequiredforCompetition();
     }
 
 }
